@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "946423296668",
+    "project_id": "feedmemobile-d94b1",
+    "storage_bucket": "feedmemobile-d94b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946423296668:android:d0edb6ff6ab45c64863359",
+        "android_client_info": {
+          "package_name": "com.andrewlam.feedme_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946423296668-jctjrc72p0up1aq17vb940atpkkenhnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYfbA_0vGrnbuyGpWe-3ouHOffXz3bupA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946423296668-jctjrc72p0up1aq17vb940atpkkenhnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

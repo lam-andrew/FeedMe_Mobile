@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>946423296668-e4nk9261dgaul11ba89d5rrg064e77q0.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.946423296668-e4nk9261dgaul11ba89d5rrg064e77q0</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAGN9RMH5P32gKARZ6ZqNeRRQrVmYtV560</string>
+	<key>GCM_SENDER_ID</key>
+	<string>946423296668</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.andrewlam.feedmeMobile</string>
+	<key>PROJECT_ID</key>
+	<string>feedmemobile-d94b1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>feedmemobile-d94b1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:946423296668:ios:6966d65e9c2eed47863359</string>
+</dict>
+</plist>
