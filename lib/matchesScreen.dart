@@ -43,7 +43,6 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
 
   // Get each matched restaurant's info
   Future getMatchInfo() async {
-
     // Load the match data from the users collection
     CollectionReference collectionRef1 = FirebaseFirestore.instance.collection("users");
     // await will wait for this future to complete before executing subsequent statements

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feedme_mobile/profileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'matchesScreen.dart';
+import 'matches.dart';
 
 class MySwipeScreen extends StatefulWidget {
   const MySwipeScreen({super.key, required this.title});
@@ -14,10 +16,17 @@ class MySwipeScreen extends StatefulWidget {
 
 List<SwipeItem> _swipeItems = <SwipeItem>[];
 List<Restaurants> _restaurantList = <Restaurants>[];
+List<Users> _userList = <Users>[];
+late List userMatchesArr = List.empty();
+List<Matches> matchesList = <Matches>[];
 // List<MenuItems> menuItems = <MenuItems>[];
 MatchEngine? _matchEngine;
 
 class _MySwipeScreenState extends State<MySwipeScreen> {
+
+  String userId = "";
+  String userDatabaseID = "";
+  String currentUserUID = "";
 
   // // Get each matched restaurant's info
   // Future getMatchInfo() async {
@@ -33,6 +42,43 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
   //   });
   // } // end getMatchInfo
 
+  // get user info and store its matches and uid in _userList
+  Future<List<Users>> getUserData() async {
+    await FirebaseFirestore.instance.collection("users").get()
+      .then((querySnapshot) {
+        for(var element in querySnapshot.docs) {
+          print(element.id);
+          // move the matches in the database into a dynamic List
+          List<dynamic> tempMatches = <dynamic>[];
+          tempMatches = element.data()['matches'];
+          // move matches from dynamic List to String List
+          List<String> userMatches = <String>[];
+          for(int i = 0; i < tempMatches.length; i++) {
+            userMatches.add(tempMatches[i].toString());
+          }
+
+          // check for duplicate Users in _userList and add the Users
+          if(_userList.isNotEmpty) {
+            for(int j = 0; j < _userList.length; j++) {
+              if(!(_userList[j].uid == element.data()['uid'])) {
+                Users newUser = Users(uid: element.data()['uid'], matches: userMatches);
+                _userList.add(newUser);
+              }
+            }
+          } else {
+            Users newUser = Users(uid: element.data()['uid'], matches: userMatches);
+            _userList.add(newUser);
+          }
+
+        }
+      }).catchError((error) {
+        print("failed to load the user info");
+        print(error);
+      });
+    return _userList;
+  }
+
+  // get restaurant info and store in _restaurantList
   Future<List<Restaurants>> getRestaurantData() async {
     // Load all the Restaurants information from firebase
     // await will wait for a future to complete before executing the subsequent statement
@@ -42,8 +88,8 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
         // print(element.data());              // print all data
         // print(element.data()['resName']);   // print specific data
         _restaurantList.add(Restaurants(name: element.data()['resName'], rating: element.data()['resRating'], hours: element.data()['resHours'],
-            type: element.data()['resType'], iconURL: element.data()['resIconURL'],
-            imageURL: element.data()['resImageURL'], description: element.data()['resDescription'], pricing: element.data()['resPricing']));
+            type: element.data()['resType'], iconURL: element.data()['resIconURL'], imageURL: element.data()['resImageURL'],
+            description: element.data()['resDescription'], pricing: element.data()['resPricing'], resID: element.data()['resID'], elementID: element.id));
       }
     }).catchError((error) {
       print("failed to load the restaurants");
@@ -51,6 +97,44 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
     });
     return _restaurantList;
   }
+
+  // Get each matched restaurant's info
+  Future getMatchInfo() async {
+    // Load the match data from the users collection
+    CollectionReference collectionRef1 = FirebaseFirestore.instance.collection("users");
+    // await will wait for this future to complete before executing subsequent statements
+    await collectionRef1.get().then((QuerySnapshot querySnapshot) {
+      for (var element in querySnapshot.docs) {
+        // if user id's match then access the matches array
+        if(userId == element["uid"]) {
+          userDatabaseID = element.id;
+          // currentUserUID = element["uid"];
+          userMatchesArr = element["matches"];
+        }
+      }
+    });
+
+    print("userMatchesArray");
+    print(userMatchesArr);
+
+    // // Load the data from the restaurants collection
+    // CollectionReference collectionRef2 = FirebaseFirestore.instance.collection("restaurants");
+    // await collectionRef2.get().then((QuerySnapshot querySnapshot) {
+    //   for (var element in querySnapshot.docs) {
+    //     // iterate through all the matches and check their Id's with the restaurants collection documents
+    //     for(int i = 0; i < userMatchesArr.length; i++) {
+    //       if(element.id == userMatchesArr[i]) {
+    //         // Add a new Matches item into the matchesList List with all the restaurant info
+    //         matchesList.add(Matches(name: element["resName"], rating: element["resRating"], hours: element["resHours"],
+    //             type: element["resType"], iconURL: element["resIconURL"], imageURL:
+    //             element["resImageURL"], description: element["resDescription"], pricing: element["resPricing"], id: element["resID"]));
+    //       }
+    //       setState(() {});
+    //     }
+    //   }
+    // });
+
+  } // end getMatchInfo
 
   // add each restaurant's content into _swipeItems List
   void initializeSwipeCards() {
@@ -62,6 +146,14 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
           imageURL: _restaurantList[i].imageURL,
         ),
         likeAction: () {
+          // check if liked restaurant is already on User's matches list
+          if(!userMatchesArr.contains(_restaurantList[i].elementID)) {
+            // add liked Restaurant to User's matches list
+            print(" USER ID: ${userId}");
+            print("USER DOCUMENT ID: ${userDatabaseID}");
+            FirebaseFirestore.instance.collection("users").doc(userDatabaseID).update({"matches": FieldValue.arrayUnion([_restaurantList[i].elementID])});
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("Liked ${_restaurantList[i].name}"),
             duration: const Duration(milliseconds: 500),
@@ -86,15 +178,25 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
     getRestaurantData().then((value) {
       setState(() {});
     });
-    // getMatchInfo().then((value) {
-    //   setState(() {});
-    // });
+    getUserData().then((value) {
+      setState(() {});
+    });
+    getMatchInfo().then((value) {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // get the user info and store it in _user
+    final user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      userId = user.uid;
+    }
+
     // this function is called in build because when called in initState it executes before restaurants collection is loaded
     initializeSwipeCards();
+
     ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     return Scaffold(
       appBar: AppBar(
@@ -339,9 +441,19 @@ class Restaurants {
   late String imageURL;
   late String description;
   late String pricing;
+  late String resID;
+  late String elementID;
 
   Restaurants({required this.name, required this.rating, required this.hours, required this.type,
-    required this.iconURL, required this.imageURL, required this.description, required this.pricing});
+              required this.iconURL, required this.imageURL, required this.description, required this.pricing,
+              required this.resID, required this.elementID});
+}
+
+class Users {
+  late List<String> matches;
+  late String uid;
+
+  Users({required this.uid, required this.matches});
 }
 
 // // Class Content to store the contents of each swipe card
