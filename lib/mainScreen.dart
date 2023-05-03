@@ -23,14 +23,6 @@ class MyMainPage extends StatefulWidget {
 
 class _MyMainPageState extends State<MyMainPage> {
 
-  // /** TEST */
-  // void _switchToSwipeScreens() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => const MySwipeScreen(title: "Discover")),
-  //   );
-  // }
-
   // function that switched to signup screen
   void _switchToSignUpScreen() {
     Navigator.push(
@@ -46,14 +38,6 @@ class _MyMainPageState extends State<MyMainPage> {
       MaterialPageRoute(builder: (context) => const MyLoginScreen(title: "Log-In Page")),
     );
   }
-
-  // void _switchToDetailsScreen() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => const MyDetailsScreen(title: "Details Page")),
-  //   );
-  // }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +62,7 @@ class _MyMainPageState extends State<MyMainPage> {
               'FEED ME',
               style: TextStyle(
                   fontFamily: 'RobotoMono',
-                  fontSize: 45,
+                  fontSize: 55,
                   fontWeight: FontWeight.bold,
                   color: Color.fromRGBO(228, 119,	102, 1)
               ),
@@ -118,15 +102,6 @@ class _MyMainPageState extends State<MyMainPage> {
               onPressed: _switchToLogInScreen,
               child: const Text('Log-In'),
             ),
-
-
-            // ElevatedButton(
-            //   style: style,
-            //   onPressed: _switchToSwipeScreens,
-            //   child: const Text('Swipe Screens'),
-            // ),
-
-
 
           ],
         ),

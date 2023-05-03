@@ -28,20 +28,6 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
   String userDatabaseID = "";
   String currentUserUID = "";
 
-  // // Get each matched restaurant's info
-  // Future getMatchInfo() async {
-  //   // Load the data from the restaurants collection
-  //   CollectionReference collectionRef2 = FirebaseFirestore.instance.collection("restaurants");
-  //   await collectionRef2.get().then((QuerySnapshot querySnapshot) {
-  //     for (var element in querySnapshot.docs) {
-  //         // convert the resMenuItems array into the menuItems List
-  //         menuItems.add(MenuItems(imageURL1: element['imageURL1'], imageURL2: element['imageURL2'], imageURL3: element['imageURL3'], imageURL4: element['imageURL4'], imageURL5: element['imageURL5']));
-  //         print(menuItems);
-  //       setState(() {});
-  //     }
-  //   });
-  // } // end getMatchInfo
-
   // get user info and store its matches and uid in _userList
   Future<List<Users>> getUserData() async {
     await FirebaseFirestore.instance.collection("users").get()
@@ -116,23 +102,6 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
 
     print("userMatchesArray");
     print(userMatchesArr);
-
-    // // Load the data from the restaurants collection
-    // CollectionReference collectionRef2 = FirebaseFirestore.instance.collection("restaurants");
-    // await collectionRef2.get().then((QuerySnapshot querySnapshot) {
-    //   for (var element in querySnapshot.docs) {
-    //     // iterate through all the matches and check their Id's with the restaurants collection documents
-    //     for(int i = 0; i < userMatchesArr.length; i++) {
-    //       if(element.id == userMatchesArr[i]) {
-    //         // Add a new Matches item into the matchesList List with all the restaurant info
-    //         matchesList.add(Matches(name: element["resName"], rating: element["resRating"], hours: element["resHours"],
-    //             type: element["resType"], iconURL: element["resIconURL"], imageURL:
-    //             element["resImageURL"], description: element["resDescription"], pricing: element["resPricing"], id: element["resID"]));
-    //       }
-    //       setState(() {});
-    //     }
-    //   }
-    // });
 
   } // end getMatchInfo
 
@@ -280,65 +249,6 @@ class _MySwipeScreenState extends State<MySwipeScreen> {
                             ) ,
                           ),
                         ),
-
-
-                        // Expanded(
-                        //   flex: 35,
-                        //   child: Container(
-                        //     margin: const EdgeInsets.only(bottom: 50),
-                        //     child: Column(
-                        //
-                        //       children: [
-                        //           // const Text(
-                        //           //   "Menu Items",
-                        //           //   style: TextStyle(
-                        //           //       fontSize: 18,
-                        //           //       fontWeight: FontWeight.bold
-                        //           //   ),
-                        //           // ),
-                        //           Container(
-                        //             margin: const EdgeInsets.only(top: 5),
-                        //             height: 175,
-                        //             child: ListView(
-                        //               scrollDirection: Axis.horizontal,
-                        //               children: <Widget>[
-                        //                 if(menuItems.isNotEmpty)...[
-                        //                   SizedBox(
-                        //                     child: Image(
-                        //                       image: NetworkImage(menuItems[index].imageURL1),
-                        //                     ),
-                        //                   ),
-                        //                   SizedBox(
-                        //                     child: Image(
-                        //                       image: NetworkImage(menuItems[index].imageURL2),
-                        //                     ),
-                        //                   ),
-                        //                   SizedBox(
-                        //                     child: Image(
-                        //                       image: NetworkImage(menuItems[index].imageURL3),
-                        //                     ),
-                        //                   ),
-                        //                   SizedBox(
-                        //                     child: Image(
-                        //                       image: NetworkImage(menuItems[index].imageURL4),
-                        //                     ),
-                        //                   ),
-                        //                   SizedBox(
-                        //                     child: Image(
-                        //                       image: NetworkImage(menuItems[index].imageURL5),
-                        //                     ),
-                        //                   ),
-                        //                 ]
-                        //
-                        //               ],
-                        //             ),
-                        //           ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-
-
                       ],
                     ),
                   ),
@@ -455,14 +365,3 @@ class Users {
 
   Users({required this.uid, required this.matches});
 }
-
-// // Class Content to store the contents of each swipe card
-// class MenuItems {
-//   late String imageURL1;
-//   late String imageURL2;
-//   late String imageURL3;
-//   late String imageURL4;
-//   late String imageURL5;
-//
-//   MenuItems({required this.imageURL1, required this.imageURL2, required this.imageURL3, required this.imageURL4, required this.imageURL5});
-// }
