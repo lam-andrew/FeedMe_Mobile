@@ -4,10 +4,10 @@ Feed Me is a mobile application that helps users explore and discover new restau
 
 Features
 
-Swipe-based interface for a seamless user experience
-Easy registration and login process
-View restaurant details including the menu, photos, and user ratings
-Like and save restaurants to the matches list
+- Swipe-based interface for a seamless user experience
+- Easy registration and login process
+- View restaurant details including the menu, photos, and user ratings
+- Like and save restaurants to the matches list
 
 Getting Started
 
